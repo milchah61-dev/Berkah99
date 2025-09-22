@@ -1,1 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Game Coin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Style untuk halaman login dan loader */
+    .login-container, .main-loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f3f4f6;
+    }
+    .login-card {
+      padding: 2.5rem;
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      max-width: 24rem;
+      width: 100%;
+    }
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3b82f6;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <script type="module">
+    // Impor modul Firebase yang dibutuhkan
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, query, onSnapshot, getDocs, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 
+    // Debugging Firebase
+    setLogLevel('debug');
+
+    // Konfigurasi Firebase dari proyek Anda
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwKiVx-xsLEb4fmW9oefZVd92WMhKh8x4",
+      authDomain: "berkah99-a1a1c.firebaseapp.com",
+      projectId: "berkah99-a1a1c",
+      storageBucket: "berkah99-a1a1c.firebasestorage.app",
+      messagingSenderId: "1074746523082",
+      appId: "1:1074746523082:web:5b5658a44f2d289cad6333",
+      measurementId: "G-C26CLT3B3D"
+    };
+
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Variabel untuk menyimpan data
+    window.usersData = [];
+    window.transactionsData = [];
+    
+    // Fungsi untuk inisialisasi aplikasi setelah otentikasi
+    async function initializeAppContent() {
+      document.getElementById('loading-page').classList.remove('hidden');
+
+      // Menggunakan ID proyek yang telah diperbarui dan jalur koleksi yang diminta
+      const usersPath = `/artifacts/berkah99-a1a1c/users`;
+      const transactionsPath = `/artifacts/berkah99-a1a1c/public/data/transactions`;
+
+      // Menyiapkan listener untuk data real-time
+      onSnapshot(collection(db, usersPath), (snapshot) => {
+        window.usersData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderUserTable();
+        updateDashboardStats();
+      });
+
+      onSnapshot(collection(db, transactionsPath), (snapshot) => {
+        window.transactionsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderTransactionTable();
+        updateDashboardStats();
+      });
+
+      document.getElementById('loading-page').classList.add('hidden');
+      document.getElementById('admin-panel').classList.remove('hidden');
+    }
+
+    // Mengelola status otentikasi
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        initializeAppContent();
+      } else {
+        document.getElementById('loading-page').classList.add('hidden');
+        document.getElementById('login-page').classList.remove('hidden');
+      }
+    });
+
+    // Logika login
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMessage = document.getElementById('error-message');
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        errorMessage.classList.add('hidden');
+      } catch (error) {
+        errorMessage.textContent = 'Email atau kata sandi salah. Silakan coba lagi.';
+        errorMessage.classList.remove('hidden');
+        console.error("Login failed:", error);
+      }
+    });
+
+    // Logika logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        window.location.reload(); // Muat ulang halaman untuk kembali ke login
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
+    });
+
+    // Logika navigasi dan tampilan
+    const buttons = document.querySelectorAll('aside button');
+    const contentSections = document.querySelectorAll('main > div');
+
+    function hideAllSections() {
+      contentSections.forEach(section => section.classList.add('hidden'));
+    }
+
+    function renderUserTable() {
+      const tbody = document.getElementById('user-table-body');
+      if (tbody) {
+        tbody.innerHTML = '';
+        window.usersData.forEach((user, index) => {
+          const row = document.createElement('tr');
+          row.className = index % 2 === 0 ? 'even:bg-gray-50' : '';
+          row.setAttribute('data-user-phone', user.phone);
+          row.setAttribute('data-user-name', user.name);
+          row.setAttribute('data-user-balance', user.balance);
+          row.setAttribute('data-user-status', user.status);
+          row.innerHTML = `
+            <td class="p-2 border">${user.name}</td>
+            <td class="p-2 border">${user.phone}</td>
+            <td class="p-2 border">${user.balance}</td>
+            <td class="p-2 border text-green-600">${user.status}</td>
+            <td class="p-2 border">
+              <button class="view-user-btn bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Lihat</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function renderTransactionTable() {
+      const tbody = document.getElementById('transaksi-table-body');
+      if (tbody) {
+        tbody.innerHTML = '';
+        window.transactionsData.forEach((tx, index) => {
+          const row = document.createElement('tr');
+          row.className = index % 2 === 0 ? 'even:bg-gray-50' : '';
+          row.innerHTML = `
+            <td class="p-2 border">${tx.id}</td>
+            <td class="p-2 border">${tx.userPhone}</td>
+            <td class="p-2 border">${tx.type}</td>
+            <td class="p-2 border">${tx.amount}</td>
+            <td class="p-2 border text-green-600">Selesai</td>
+            <td class="p-2 border">${tx.date}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+    
+    function updateDashboardStats() {
+      const totalUsers = window.usersData.length;
+      document.getElementById('total-user-stat').textContent = totalUsers;
+
+      const totalTransactions = window.transactionsData.length;
+      document.getElementById('total-transaksi-stat').textContent = totalTransactions;
+
+      let totalBalance = 0;
+      window.usersData.forEach(user => {
+        totalBalance += user.balance;
+      });
+      const formattedBalance = totalBalance.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+      document.getElementById('total-saldo-stat').textContent = formattedBalance;
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('bg-gray-800'));
+        button.classList.add('bg-gray-800');
+        hideAllSections();
+        const targetId = button.getAttribute('data-target') + '-content';
+        document.getElementById(targetId).classList.remove('hidden');
+        if (button.getAttribute('data-target') === 'dashboard') {
+          updateDashboardStats();
+        }
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.target.matches('.view-user-btn')) {
+        const row = event.target.closest('tr');
+        const userPhone = row.getAttribute('data-user-phone');
+        const user = window.usersData.find(u => u.phone === userPhone);
+        if (user) {
+          document.getElementById('profile-name').textContent = user.name;
+          document.getElementById('profile-detail-name').textContent = user.name;
+          document.getElementById('profile-detail-phone').textContent = user.phone;
+          document.getElementById('profile-detail-balance').textContent = user.balance;
+          document.getElementById('profile-detail-status').textContent = user.status;
+          const topupTableBody = document.getElementById('topup-history-table');
+          const withdrawTableBody = document.getElementById('withdraw-history-table');
+          topupTableBody.innerHTML = '';
+          withdrawTableBody.innerHTML = '';
+          const userTopups = window.transactionsData.filter(t => t.userPhone === userPhone && t.type === 'Top-Up');
+          const userWithdrawals = window.transactionsData.filter(t => t.userPhone === userPhone && t.type === 'Withdraw');
+          userTopups.forEach(transaction => {
+            const newRow = document.createElement('tr');
+            newRow.className = 'even:bg-gray-50';
+            newRow.innerHTML = `<td class="p-2 border">${transaction.amount}</td><td class="p-2 border">${transaction.date}</td>`;
+            topupTableBody.appendChild(newRow);
+          });
+          userWithdrawals.forEach(transaction => {
+            const newRow = document.createElement('tr');
+            newRow.className = 'even:bg-gray-50';
+            newRow.innerHTML = `<td class="p-2 border">${transaction.amount}</td><td class="p-2 border">${transaction.date}</td>`;
+            withdrawTableBody.appendChild(newRow);
+          });
+        }
+        hideAllSections();
+        document.getElementById('user-profile-content').classList.remove('hidden');
+      }
+
+      if (event.target.matches('#back-to-user-btn')) {
+        hideAllSections();
+        document.getElementById('user-content').classList.remove('hidden');
+      }
+    });
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Halaman Loader -->
+  <div id="loading-page" class="main-loader">
+    <div class="loader"></div>
+    <p class="mt-4 text-gray-600">Menghubungkan ke database...</p>
+  </div>
+
+  <!-- Halaman Login -->
+  <div id="login-page" class="login-container hidden">
+    <div class="login-card">
+      <h1 class="text-3xl font-bold text-center mb-6">Login Admin</h1>
+      <p class="text-center text-gray-600 mb-4">Masuk untuk mengakses panel admin.</p>
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
+        <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" placeholder="admin@contoh.com">
+      </div>
+      <div class="mb-6">
+        <label for="password" class="block text-gray-700 font-bold mb-2">Kata Sandi</label>
+        <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" placeholder="Masukkan kata sandi">
+      </div>
+      <button id="login-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200">Login</button>
+      <p id="error-message" class="text-red-500 text-center mt-4 hidden"></p>
+    </div>
+  </div>
+
+  <!-- Konten Admin Panel (Tersembunyi Awalnya) -->
+  <div id="admin-panel" class="hidden flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white flex flex-col">
+      <div class="p-4 text-2xl font-bold border-b border-gray-700">📈 Admin Panel</div>
+      <nav class="flex-1 p-4 space-y-2">
+        <button id="dashboard-btn" class="w-full text-left py-2 px-3 rounded bg-gray-800 hover:bg-gray-700" data-target="dashboard">📊 Dashboard</button>
+        <button id="user-btn" class="w-full text-left py-2 px-3 rounded hover:bg-gray-700" data-target="user">👥 User</button>
+        <button id="transaksi-btn" class="w-full text-left py-2 px-3 rounded hover:bg-gray-700" data-target="transaksi">💰 Transaksi</button>
+        <button id="laporan-btn" class="w-full text-left py-2 px-3 rounded hover:bg-gray-700" data-target="laporan">📄 Laporan</button>
+      </nav>
+      <div class="p-4 border-t border-gray-700">
+        <button id="logout-btn" class="w-full py-2 px-3 rounded bg-red-600 hover:bg-red-700">Keluar</button>
+      </div>
+    </aside>
+
+    <!-- Konten Utama -->
+    <main id="content-area" class="flex-1 p-6 overflow-y-auto">
+      <!-- Halaman Dashboard (tampil secara default) -->
+      <div id="dashboard-content">
+        <header class="mb-6">
+          <h1 class="text-3xl font-bold">Dashboard</h1>
+          <p class="text-gray-500">Selamat datang, Admin!</p>
+        </header>
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div class="p-4 bg-white shadow rounded">
+            <h2 class="text-gray-500">Total User</h2>
+            <p id="total-user-stat" class="text-xl font-bold">0</p>
+          </div>
+          <div class="p-4 bg-white shadow rounded">
+            <h2 class="text-gray-500">Total Transaksi</h2>
+            <p id="total-transaksi-stat" class="text-xl font-bold">0</p>
+          </div>
+          <div class="p-4 bg-white shadow rounded">
+            <h2 class="text-gray-500">Saldo Beredar</h2>
+            <p id="total-saldo-stat" class="text-xl font-bold">0</p>
+          </div>
+        </section>
+        <section class="bg-white shadow rounded p-4">
+          <h2 class="text-xl font-bold mb-4">Transaksi Pending</h2>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="bg-gray-200 text-left">
+                <th class="p-2 border">User</th>
+                <th class="p-2 border">Jenis</th>
+                <th class="p-2 border">Jumlah</th>
+                <th class="p-2 border">Status</th>
+                <th class="p-2 border">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data akan diisi oleh JavaScript dari database -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- Halaman User -->
+      <div id="user-content" class="hidden">
+        <header class="mb-6">
+          <h1 class="text-3xl font-bold">Manajemen User</h1>
+          <p class="text-gray-500">Daftar lengkap pengguna yang terdaftar.</p>
+        </header>
+        <section class="bg-white shadow rounded p-4">
+          <h2 class="text-xl font-bold mb-4">Daftar Pengguna</h2>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="bg-gray-200 text-left">
+                <th class="p-2 border">Nama</th>
+                <th class="p-2 border">No. Telepon</th>
+                <th class="p-2 border">Saldo Koin</th>
+                <th class="p-2 border">Status</th>
+                <th class="p-2 border">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="user-table-body">
+              <!-- Data akan diisi oleh JavaScript dari database -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- Halaman Profil Pengguna -->
+      <div id="user-profile-content" class="hidden">
+        <header class="mb-6">
+          <button id="back-to-user-btn" class="mb-4 text-blue-600 hover:text-blue-800 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Kembali ke Daftar Pengguna
+          </button>
+          <h1 id="profile-name" class="text-3xl font-bold"></h1>
+          <p class="text-gray-500">Detail Lengkap Profil Pengguna</p>
+        </header>
+        <section class="bg-white shadow rounded p-4 mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h3 class="font-bold text-gray-600">Nama</h3>
+              <p id="profile-detail-name" class="text-lg"></p>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-600">No. Telepon</h3>
+              <p id="profile-detail-phone" class="text-lg"></p>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-600">Saldo Koin</h3>
+              <p id="profile-detail-balance" class="text-lg"></p>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-600">Status</h3>
+              <p id="profile-detail-status" class="text-lg"></p>
+            </div>
+          </div>
+        </section>
+        <section class="bg-white shadow rounded p-4 mb-6">
+          <h2 class="text-xl font-bold mb-4">Riwayat Top-Up</h2>
+          <div class="max-h-56 overflow-y-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-gray-200 text-left">
+                  <th class="p-2 border">Jumlah</th>
+                  <th class="p-2 border">Tanggal</th>
+                </tr>
+              </thead>
+              <tbody id="topup-history-table">
+                <!-- Data akan diisi dari database -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="bg-white shadow rounded p-4">
+          <h2 class="text-xl font-bold mb-4">Riwayat Withdraw</h2>
+          <div class="max-h-56 overflow-y-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-gray-200 text-left">
+                  <th class="p-2 border">Jumlah</th>
+                  <th class="p-2 border">Tanggal</th>
+                </tr>
+              </thead>
+              <tbody id="withdraw-history-table">
+                <!-- Data akan diisi dari database -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Halaman Transaksi -->
+      <div id="transaksi-content" class="hidden">
+        <header class="mb-6">
+          <h1 class="text-3xl font-bold">Daftar Transaksi</h1>
+          <p class="text-gray-500">Riwayat lengkap semua transaksi.</p>
+        </header>
+        <section class="bg-white shadow rounded p-4">
+          <h2 class="text-xl font-bold mb-4">Riwayat Transaksi</h2>
+          <div class="max-h-96 overflow-y-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-gray-200 text-left">
+                  <th class="p-2 border">ID Transaksi</th>
+                  <th class="p-2 border">User</th>
+                  <th class="p-2 border">Jenis</th>
+                  <th class="p-2 border">Jumlah</th>
+                  <th class="p-2 border">Status</th>
+                  <th class="p-2 border">Tanggal</th>
+                </tr>
+              </thead>
+              <tbody id="transaksi-table-body">
+                <!-- Data akan diisi oleh JavaScript dari database -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Halaman Laporan -->
+      <div id="laporan-content" class="hidden">
+        <header class="mb-6">
+          <h1 class="text-3xl font-bold">Laporan</h1>
+          <p class="text-gray-500">Ringkasan dan laporan statistik.</p>
+        </header>
+        <section class="bg-white shadow rounded p-4">
+          <h2 class="text-xl font-bold mb-4">Ringkasan Statistik</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="p-4 bg-gray-100 rounded-lg shadow-inner">
+              <p class="text-sm text-gray-500">Total Pendapatan (Bulan Ini)</p>
+              <p class="text-2xl font-bold">Rp 2.500.000</p>
+            </div>
+            <div class="p-4 bg-gray-100 rounded-lg shadow-inner">
+              <p class="text-sm text-gray-500">Jumlah Transaksi Terbanyak</p>
+              <p class="text-2xl font-bold">Top-Up</p>
+            </div>
+          </div>
+          <hr class="my-4">
+          <h2 class="text-xl font-bold mb-4">Grafik Transaksi Bulanan</h2>
+          <div class="mt-4 p-4 border border-gray-300 rounded flex justify-center">
+            <img src="https://placehold.co/600x400/E5E7EB/4B5563?text=Grafik+Data" alt="Grafik data laporan bulanan" class="w-full h-auto max-w-xl">
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
