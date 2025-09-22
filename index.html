@@ -1,1 +1,1633 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berkah99</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Exo+2:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00FFFF;
+            --neon-gold: #FFD700;
+            --dark-blue: #0D1317;
+            --bronze: #CD7F32;
+            --silver: #C0C0C0;
+            --black: #000000;
+            --blue: #0000FF;
+        }
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--dark-blue);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow-x: hidden; /* Prevent horizontal overflow */
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            animation: fade-in 0.5s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .hologram-grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: move-grid 20s linear infinite;
+        }
+
+        @keyframes move-grid {
+            from { background-position: 0 0; }
+            to { background-position: 50px 50px; }
+        }
+
+        .shimmer-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle, var(--neon-gold) 0%, transparent 50%);
+            background-size: 300px 300px;
+            animation: gold-shimmer 15s ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        @keyframes gold-shimmer {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 0.2; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        
+        .particle-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            background: var(--neon-gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: move-particles 10s linear infinite;
+        }
+        @keyframes move-particles {
+            0% { transform: translateY(0) scale(0); opacity: 0; }
+            20% { opacity: 0.5; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(100vh) scale(1); opacity: 0; }
+        }
+
+        .glassmorphism {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .neon-glow {
+            text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 15px var(--neon-cyan);
+        }
+
+        .neon-border-cyan {
+            box-shadow: 0 0 5px var(--neon-cyan), inset 0 0 5px var(--neon-cyan);
+        }
+
+        .neon-border-gold {
+            box-shadow: 0 0 5px var(--neon-gold), inset 0 0 5px var(--neon-gold);
+        }
+
+        .neon-text-gold {
+            text-shadow: 0 0 5px var(--neon-gold);
+        }
+
+        .neon-text-cyan {
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+        
+        .hologram-icon-effect {
+            animation: hologram-pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        .hologram-hover:hover {
+            animation: hologram-glow 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes hologram-glow {
+            from { box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan); }
+            to { box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan); }
+        }
+
+        @keyframes hologram-pulse {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.05); opacity: 1; }
+        }
+
+        .floating {
+            animation: floating-anim 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floating-anim {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        .coin-spin {
+            animation: spin 2s linear infinite;
+            transform-style: preserve-3d;
+        }
+        @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        
+        .coin-rain-gold {
+            width: 20px;
+            height: 20px;
+            background: var(--neon-gold);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transform: rotate(45deg);
+        }
+
+        @keyframes coin-fall {
+            from { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            to { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+        }
+
+        .shatter-animation {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(0,255,255,0.5) 0%, transparent 10%),
+                linear-gradient(45deg, var(--neon-cyan) 0%, transparent 20%),
+                linear-gradient(135deg, var(--neon-cyan) 0%, transparent 20%),
+                linear-gradient(225deg, var(--neon-cyan) 0%, transparent 20%),
+                linear-gradient(315deg, var(--neon-cyan) 0%, transparent 20%);
+            animation: shatter 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes shatter {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5) rotate(90deg); opacity: 0; }
+        }
+        
+        .fireworks-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            transform: translate(-50%, -50%);
+            animation: explode 0.8s forwards;
+        }
+
+        .fireworks-animation::before, .fireworks-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-gold);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: sparkle 1s forwards;
+            animation-delay: 0.3s;
+        }
+        .fireworks-animation::after {
+            background: var(--neon-cyan);
+            animation-delay: 0.5s;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        @keyframes sparkle {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+
+        @keyframes scale-up-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px var(--neon-cyan); }
+        }
+        
+        .animate-scale-up-pulse {
+            animation: scale-up-pulse 0.5s ease-in-out forwards;
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .topup-card-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .topup-card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            border-radius: inherit;
+        }
+
+        .topup-card-bronze .topup-card-bg {
+            background: linear-gradient(135deg, rgba(205,127,50,0.8) 0%, rgba(255,215,0,0.2) 100%);
+            box-shadow: 0 0 15px var(--bronze);
+        }
+        
+        .topup-card-silver .topup-card-bg {
+            background: linear-gradient(135deg, rgba(192,192,192,0.8) 0%, rgba(255,255,255,0.2) 100%);
+            box-shadow: 0 0 15px var(--silver);
+        }
+        
+        .topup-card-black .topup-card-bg {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,255,0.2) 100%);
+            box-shadow: 0 0 15px var(--black);
+        }
+        
+        .topup-card-blue .topup-card-bg {
+            background: linear-gradient(135deg, rgba(0,0,255,0.8) 0%, rgba(0,255,255,0.2) 100%);
+            box-shadow: 0 0 15px var(--blue);
+        }
+        
+        .topup-card-gold .topup-card-bg {
+            background: linear-gradient(135deg, rgba(255,215,0,0.8) 0%, rgba(255,255,255,0.2) 100%);
+            box-shadow: 0 0 15px var(--neon-gold);
+        }
+        
+        .topup-card-effect {
+            animation: glow-pulse 3s infinite alternate;
+        }
+        
+        .buy-button-bronze {
+            background: rgba(205,127,50,0.8);
+            border-color: var(--bronze);
+        }
+        .buy-button-silver {
+            background: rgba(192,192,192,0.8);
+            border-color: var(--silver);
+        }
+        .buy-button-black {
+            background: rgba(0,0,0,0.8);
+            border-color: var(--black);
+        }
+        .buy-button-blue {
+            background: rgba(0,0,255,0.8);
+            border-color: var(--blue);
+        }
+        .buy-button-gold {
+            background: rgba(255,215,0,0.8);
+            border-color: var(--neon-gold);
+        }
+
+
+        @keyframes glow-pulse {
+            from { box-shadow: 0 0 10px var(--neon-gold), 0 0 20px rgba(255,215,0,0.4); }
+            to { box-shadow: 0 0 20px var(--neon-gold), 0 0 40px rgba(255,215,0,0.6); }
+        }
+        
+        /* CSS Tulisan Berjalan yang Disederhanakan */
+        .marquee-container {
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            /* Memulai teks dari kanan */
+            padding-left: 100%; 
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+        
+        @keyframes tap-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+        .animate-tap-pulse {
+            animation: tap-pulse 0.2s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-dark-blue flex flex-col items-center justify-center min-h-screen relative">
+    <!-- Background Elements -->
+    <div class="hologram-grid-bg"></div>
+    <div class="shimmer-bg"></div>
+    <div class="particle-bg" id="particle-container"></div>
+
+    <!-- Modal for messages -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 items-center justify-center transition-opacity duration-300">
+        <div class="glassmorphism p-8 rounded-2xl w-80 text-center neon-border-cyan">
+            <p id="modal-message" class="text-lg font-orbitron neon-text-cyan"></p>
+            <button id="close-modal-button" class="mt-6 w-full py-3 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Duel Confirmation Modal -->
+    <div id="duel-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 items-center justify-center transition-opacity duration-300">
+        <div class="glassmorphism p-8 rounded-2xl w-80 text-center neon-border-gold">
+            <h3 class="text-2xl font-orbitron neon-text-gold mb-4">Undangan Duel</h3>
+            <p class="text-md font-exo-2 text-white">Anda yakin ingin menantang <span id="duel-modal-opponent-name" class="font-bold neon-text-cyan"></span>?</p>
+            <div class="mt-6 flex justify-around space-x-4">
+                <button id="confirm-duel-button" class="flex-1 py-3 rounded-full bg-gold-500/80 neon-border-gold transition-transform hover:scale-105 font-orbitron">Ya</button>
+                <button id="cancel-duel-button" class="flex-1 py-3 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron">Tidak</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Login/Register -->
+    <div id="page-login" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col justify-center items-center p-8 relative z-10">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-orbitron neon-glow mb-2">Berkah99</h1>
+                <p class="text-xl font-orbitron neon-glow opacity-80">Game suit viral</p>
+            </div>
+            <div class="glassmorphism p-6 rounded-3xl w-full max-w-sm neon-border-cyan">
+                <h2 class="text-2xl font-orbitron mb-6 text-center neon-text-cyan">Masuk / Daftar</h2>
+                <div class="mb-4 relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">📱</span>
+                    <input type="text" id="phone-input" placeholder="Nomor HP" class="w-full py-3 pl-10 pr-4 rounded-full bg-black/50 border-2 border-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-orbitron neon-text-cyan">
+                </div>
+                <div class="mb-6 relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔒</span>
+                    <input type="password" id="password-input" placeholder="Kata Sandi" class="w-full py-3 pl-10 pr-4 rounded-full bg-black/50 border-2 border-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-orbitron neon-text-cyan">
+                </div>
+                <button id="login-button" class="w-full py-3 rounded-full bg-cyan-500/80 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow mb-2">
+                    Masuk
+                </button>
+                <button id="register-button" class="w-full py-3 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow">
+                    Daftar
+                </button>
+                <button id="about-button" class="mt-4 w-full py-3 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow">
+                    Tentang Aplikasi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Register New -->
+    <div id="page-register" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col justify-center items-center p-8 relative z-10">
+            <button id="register-back-button" class="self-start py-2 px-4 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow mb-8">
+                ← Kembali
+            </button>
+            <div class="glassmorphism p-6 rounded-3xl w-full max-w-sm neon-border-cyan">
+                <h2 class="text-2xl font-orbitron mb-6 text-center neon-text-cyan">Pendaftaran Akun</h2>
+                <div class="mb-4 relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">👤</span>
+                    <input type="text" id="register-name-input" placeholder="Nama Lengkap" class="w-full py-3 pl-10 pr-4 rounded-full bg-black/50 border-2 border-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-orbitron neon-text-cyan">
+                </div>
+                <div class="mb-4 relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">📱</span>
+                    <input type="tel" id="register-phone-input" placeholder="Nomor HP (OVO/DANA/GoPay)" class="w-full py-3 pl-10 pr-4 rounded-full bg-black/50 border-2 border-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-orbitron neon-text-cyan">
+                </div>
+                <div class="mb-6 relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔒</span>
+                    <input type="password" id="register-password-input" placeholder="Kata Sandi" class="w-full py-3 pl-10 pr-4 rounded-full bg-black/50 border-2 border-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-orbitron neon-text-cyan">
+                </div>
+                <button id="register-submit-button" class="w-full py-3 rounded-full bg-cyan-500/80 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow">
+                    Daftar Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Page: About App -->
+    <div id="page-about" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col justify-center items-center p-8 relative z-10">
+            <button id="about-back-button" class="self-start py-2 px-4 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow mb-8">
+                ← Kembali
+            </button>
+            <div class="glassmorphism p-8 rounded-3xl w-full max-w-lg neon-border-cyan text-center">
+                <h2 class="text-3xl font-orbitron neon-text-cyan mb-4">Masa Depan Gaming Sudah Tiba</h2>
+                <p class="text-md text-gray-300 mb-6 leading-relaxed">
+                    Selamat datang di Berkah99, game suit online yang akan membawa Anda ke era Kekayaan. Kami merancang setiap detail untuk memberikan pengalaman yang tak tertandingi. Dari desain cyberpunk yang memukau, efek hologram yang interaktif, hingga sistem ekonomi keuangan yang transparan, kami percaya game ini akan menjadi favorit Anda.
+                </p>
+                <p class="text-md text-gray-300 mb-6 leading-relaxed">
+                    Setiap duel adalah tantangan sejati, di mana Anda akan berhadapan dengan pemain lain dalam pertandingan yang adil dan seimbang. Kemenangan bukan hanya soal keberuntungan, tapi juga strategi untuk menjadi orang kaya. Kumpulkan koin, lakukan penarikan, dan raih posisi teratas di Hall of Fame pemenang.
+                </p>
+                <p class="text-xl font-orbitron neon-text-gold mt-8">
+                    Ini bukan sekadar game. Ini adalah masa depan gaming dan masa depan anda.
+                </p>
+                <button id="about-to-login-button" class="mt-6 w-full py-3 rounded-full bg-gold-500/80 neon-border-gold transition-transform hover:scale-105 font-orbitron">
+                    Mulai Bermain Sekarang!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Game Lobby -->
+    <div id="page-lobby" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col p-4 relative z-10">
+            <!-- Header -->
+            <div class="glassmorphism p-4 rounded-3xl flex items-center justify-between mb-8 neon-border-cyan">
+                <div class="flex items-center space-x-2">
+                    <div class="coin-spin">
+                        <span class="text-3xl font-orbitron neon-text-gold">🪙</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-400 font-orbitron">Saldo Koin</p>
+                        <p id="balance-display" class="text-2xl font-orbitron neon-text-gold drop-shadow-[0_0_10px_#FFD700]">$0</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="lobby-profile-button" class="py-2 px-4 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow">Profil Saya</button>
+                    <button id="lobby-topup-button" class="py-2 px-4 rounded-full bg-cyan-500/80 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow">Top-Up</button>
+                    <button id="lobby-play-button" class="py-2 px-4 rounded-full bg-gold-500/80 neon-border-gold transition-transform hover:scale-105 font-orbitron neon-glow">Main Sekarang</button>
+                </div>
+            </div>
+            
+            <!-- Removed: Marquee for winners -->
+
+            <!-- Online Players List -->
+            <div class="flex-grow glassmorphism p-4 rounded-3xl overflow-y-auto neon-border-cyan">
+                <h2 class="text-xl font-orbitron mb-4 text-center neon-text-cyan">Pemain Online</h2>
+                <div id="online-players-list" class="space-y-4 mb-8">
+                    <!-- Players will be dynamically inserted here by JS -->
+                </div>
+                <hr class="border-gray-700 my-4">
+                <h2 class="text-xl font-orbitron mb-4 text-center text-gray-500">Pemain Offline</h2>
+                <div id="offline-players-list" class="space-y-4">
+                    <!-- Offline players will be dynamically inserted here by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Profile -->
+    <div id="page-profile" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col justify-center items-center p-8 relative z-10">
+            <button id="profile-back-button" class="self-start py-2 px-4 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow mb-8">
+                ← Kembali
+            </button>
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-orbitron neon-glow mb-2">PROFIL SAYA</h1>
+            </div>
+            <div class="glassmorphism p-6 rounded-3xl w-full max-w-sm neon-border-cyan">
+                <div class="mb-6">
+                    <p class="text-sm text-gray-400 font-orbitron">Nama Pengguna:</p>
+                    <input type="text" id="profile-name-input" class="w-full py-3 px-4 rounded-full bg-black/50 border-2 border-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-orbitron neon-text-cyan">
+                </div>
+                <div class="mb-6">
+                    <p class="text-sm text-gray-400 font-orbitron">Nomor Terdaftar:</p>
+                    <p id="profile-phone-display" class="w-full py-3 px-4 rounded-full bg-black/50 border-2 border-cyan-800 font-orbitron neon-text-cyan opacity-80"></p>
+                </div>
+                <button id="save-profile-button" class="w-full py-3 rounded-full bg-cyan-500/80 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow">
+                    Simpan Perubahan
+                </button>
+                
+                <hr class="border-gray-700 my-6">
+
+                <!-- New: Withdraw section -->
+                <div class="mb-4">
+                    <h3 class="text-xl font-orbitron neon-text-gold mb-4 text-center">Tarik Koin</h3>
+                    <div class="mb-4 relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                        <input type="number" id="withdraw-input" placeholder="Jumlah penarikan (min 300)" class="w-full py-3 pl-8 pr-4 rounded-full bg-black/50 border-2 border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500 font-orbitron neon-text-gold">
+                    </div>
+                    <button id="withdraw-button" class="w-full py-3 rounded-full bg-gold-500/80 neon-border-gold transition-transform hover:scale-105 font-orbitron neon-glow">
+                        Tarik Koin
+                    </button>
+                </div>
+
+                <!-- New: Transaction History -->
+                <hr class="border-gray-700 my-6">
+                <div class="mb-4">
+                    <h3 class="text-xl font-orbitron neon-text-cyan mb-4 text-center">Riwayat Transaksi</h3>
+                    <div id="transaction-history-list" class="space-y-3">
+                        <!-- Transaction history will be dynamically inserted here -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Arena Suit -->
+    <div id="page-arena" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col justify-between items-center p-8 relative z-10">
+            <!-- New: Tombol Kembali -->
+            <button id="arena-back-button" class="self-start py-2 px-4 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow mb-8">
+                ← Kembali
+            </button>
+            <div class="glassmorphism p-4 rounded-2xl w-full text-center neon-border-cyan mb-4">
+                <p class="text-xl font-orbitron neon-text-cyan">Lawan Anda: <span id="arena-opponent-name" class="font-bold">Bot</span></p>
+                <p id="countdown-timer" class="text-xl font-orbitron neon-text-gold drop-shadow-[0_0_10px_#FFD700] mt-2 hidden"></p>
+            </div>
+
+            <!-- New elements to display choices -->
+            <div class="w-full max-w-sm flex justify-around items-center my-8">
+                <div class="text-center flex flex-col items-center">
+                    <p class="text-xl font-orbitron neon-text-cyan">Pilihan Anda</p>
+                    <div id="player-choice-display" class="w-24 h-24 text-6xl flex items-center justify-center hidden"></div>
+                </div>
+                <div class="text-center flex flex-col items-center">
+                    <p class="text-xl font-orbitron neon-text-cyan">Musuh</p>
+                    <div id="bot-choice-display" class="w-24 h-24 text-6xl flex items-center justify-center hidden"></div>
+                </div>
+            </div>
+            
+            <p id="arena-result-text" class="text-xl font-orbitron neon-text-cyan my-4 text-center hidden">
+                <!-- Teks akan muncul di sini -->
+            </p>
+
+            <div class="relative w-full h-full flex items-center justify-center">
+                <div id="result-animation-container" class="absolute inset-0 z-20 pointer-events-none"></div>
+                <h2 id="result-message" class="text-4xl font-orbitron text-center neon-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 hidden"></h2>
+            </div>
+            
+            <div id="arena-choices" class="grid grid-cols-3 gap-4 w-full max-w-sm mt-auto">
+                <button data-choice="rock" class="choice-button aspect-square flex flex-col items-center justify-center p-4 rounded-3xl glassmorphism neon-border-cyan transition-transform hover:scale-110 hologram-hover">
+                    <span class="text-5xl hologram-icon-effect">✊</span>
+                    <p class="mt-2 text-sm font-orbitron">Batu</p>
+                </button>
+                <button data-choice="paper" class="choice-button aspect-square flex flex-col items-center justify-center p-4 rounded-3xl glassmorphism neon-border-cyan transition-transform hover:scale-110 hologram-hover">
+                    <span class="text-5xl hologram-icon-effect">✋</span>
+                    <p class="mt-2 text-sm font-orbitron">Kertas</p>
+                </button>
+                <button data-choice="scissors" class="choice-button aspect-square flex flex-col items-center justify-center p-4 rounded-3xl glassmorphism neon-border-cyan transition-transform hover:scale-110 hologram-hover">
+                    <span class="text-5xl hologram-icon-effect">✌️</span>
+                    <p class="mt-2 text-sm font-orbitron">Gunting</p>
+                </button>
+            </div>
+             <div class="w-full flex justify-center mt-4 hidden" id="arena-continue-container">
+                <button id="arena-continue-yes" class="py-2 px-6 rounded-full bg-gold-500/80 neon-border-gold transition-transform hover:scale-105 font-orbitron">Ya</button>
+                <button id="arena-continue-no" class="ml-4 py-2 px-6 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron">Tidak</button>
+            </div>
+            <p id="arena-continue-text" class="text-sm text-gray-400 font-orbitron mt-2 hidden"></p>
+        </div>
+    </div>
+    
+    <!-- Page: Top-Up -->
+    <div id="page-topup" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col p-8 relative z-10 overflow-y-auto">
+            <button id="topup-back-button" class="self-start py-2 px-4 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow mb-8">
+                ← Kembali
+            </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl mx-auto text-center">
+                <!-- Bronze Card -->
+                <div class="glassmorphism p-6 rounded-3xl neon-border-cyan topup-card-container topup-card-bronze">
+                    <div class="topup-card-bg"></div>
+                    <h2 class="text-xl font-orbitron mb-2 neon-text-cyan">Kartu Bronze</h2>
+                    <p class="text-lg font-orbitron text-gray-400 mb-4">Harga: Rp 10.000</p>
+                    <div class="w-full aspect-video rounded-xl mx-auto mb-4 border-2 border-bronze bg-bronze/20 flex items-center justify-center">
+                        <p class="text-xl font-orbitron text-white opacity-80 neon-glow">100 Koin</p>
+                    </div>
+                    <button data-value="100" class="buy-topup-button w-full py-3 rounded-full buy-button-bronze transition-transform hover:scale-105 font-orbitron neon-glow">
+                        Beli Sekarang
+                    </button>
+                </div>
+
+                <!-- Silver Card -->
+                <div class="glassmorphism p-6 rounded-3xl neon-border-cyan topup-card-container topup-card-silver">
+                    <div class="topup-card-bg"></div>
+                    <h2 class="text-xl font-orbitron mb-2 neon-text-cyan">Kartu Perak</h2>
+                    <p class="text-lg font-orbitron text-gray-400 mb-4">Harga: Rp 30.000</p>
+                    <div class="w-full aspect-video rounded-xl mx-auto mb-4 border-2 border-silver bg-silver/20 flex items-center justify-center">
+                        <p class="text-xl font-orbitron text-white opacity-80 neon-glow">350 Koin</p>
+                    </div>
+                    <button data-value="350" class="buy-topup-button w-full py-3 rounded-full buy-button-silver transition-transform hover:scale-105 font-orbitron neon-glow">
+                        Beli Sekarang
+                    </button>
+                </div>
+
+                <!-- Black Card -->
+                <div class="glassmorphism p-6 rounded-3xl neon-border-cyan topup-card-container topup-card-black">
+                    <div class="topup-card-bg"></div>
+                    <h2 class="text-xl font-orbitron mb-2 text-white">Kartu Black</h2>
+                    <p class="text-lg font-orbitron text-gray-400 mb-4">Harga: Rp 50.000</p>
+                    <div class="w-full aspect-video rounded-xl mx-auto mb-4 border-2 border-black bg-black/50 flex items-center justify-center">
+                        <p class="text-xl font-orbitron text-white opacity-80 neon-glow">600 Koin</p>
+                    </div>
+                    <button data-value="600" class="buy-topup-button w-full py-3 rounded-full buy-button-black transition-transform hover:scale-105 font-orbitron neon-glow">
+                        Beli Sekarang
+                    </button>
+                </div>
+
+                <!-- Blue Card -->
+                <div class="glassmorphism p-6 rounded-3xl neon-border-cyan topup-card-container topup-card-blue">
+                    <div class="topup-card-bg"></div>
+                    <h2 class="text-xl font-orbitron mb-2 text-white">Kartu Blue</h2>
+                    <p class="text-lg font-orbitron text-gray-400 mb-4">Harga: Rp 80.000</p>
+                    <div class="w-full aspect-video rounded-xl mx-auto mb-4 border-2 border-blue bg-blue/20 flex items-center justify-center">
+                        <p class="text-xl font-orbitron text-white opacity-80 neon-glow">1.000 Koin</p>
+                    </div>
+                    <button data-value="1000" class="buy-topup-button w-full py-3 rounded-full buy-button-blue transition-transform hover:scale-105 font-orbitron neon-glow">
+                        Beli Sekarang
+                    </button>
+                </div>
+
+                <!-- Gold Card -->
+                <div class="glassmorphism p-6 rounded-3xl neon-border-cyan topup-card-container topup-card-gold">
+                    <div class="topup-card-bg"></div>
+                    <h2 class="text-xl font-orbitron mb-2 neon-text-gold">Kartu Gold</h2>
+                    <p class="text-lg font-orbitron text-gray-400 mb-4">Harga: Rp 150.000</p>
+                    <div class="w-full aspect-video rounded-xl mx-auto mb-4 border-2 border-gold bg-gold/20 flex items-center justify-center">
+                        <p class="text-xl font-orbitron text-white opacity-80 neon-glow">2.000 Koin</p>
+                    </div>
+                    <button data-value="2000" class="buy-topup-button w-full py-3 rounded-full buy-button-gold transition-transform hover:scale-105 font-orbitron neon-glow">
+                        Beli Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Page: Payment -->
+    <div id="page-payment" class="page opacity-0 z-0 hidden">
+        <div class="w-full h-full flex flex-col p-8 relative z-10 overflow-y-auto">
+            <button id="payment-back-button" class="self-start py-2 px-4 rounded-full bg-cyan-800/50 neon-border-cyan transition-transform hover:scale-105 font-orbitron neon-glow mb-8">
+                ← Kembali
+            </button>
+            <div class="glassmorphism p-8 rounded-3xl w-full max-w-sm text-center neon-border-cyan">
+                <h2 class="text-2xl font-orbitron neon-text-cyan mb-4">Pembayaran Top-Up</h2>
+                <p class="text-sm text-gray-400 mb-6">Lakukan transfer ke nomor e-wallet admin yang tertera di bawah ini dan tunggu admin mengonfirmasi pembelian Anda.</p>
+                <div class="mb-6">
+                    <p class="font-orbitron text-md neon-text-gold">Nomor HP Admin:</p>
+                    <p class="text-xl font-bold mt-1">08563777508</p>
+                </div>
+                
+                <p class="text-sm text-gray-400 mt-6">Setelah transfer, tekan tombol di bawah ini.</p>
+                <button id="payment-complete-button" class="mt-4 w-full py-3 rounded-full bg-gold-500/80 neon-border-gold transition-transform hover:scale-105 font-orbitron">
+                    Selesai Transfer
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc, updateDoc, collection, query, where, setLogLevel, addDoc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Optional: Enable Firebase debug logging
+            setLogLevel('debug');
+
+            // Global variables provided by the environment
+            const appId = 'berkah99-a1a1c';
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+            let db, auth, userId, userDocRef, unsubscribeFromUser, unsubscribeFromPlayers, unsubscribeFromTransactions, unsubscribeFromGame;
+
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            const state = {
+                currentPage: 'loading',
+                userBalance: 0,
+                userName: '',
+                userPhoneNumber: '',
+                simulatedPlayers: [],
+                opponentName: 'Bot',
+                gameIndex: 0,
+                timerTimeoutId: null,
+                isChoiceMade: false,
+                continueTimer: null,
+                isContinueClicked: false,
+                currentTopupAmount: 0,
+                hasWithdrawn: false, 
+                currentMatchId: null,
+                isBotDuel: true,
+            };
+
+            
+            // Data untuk pemain simulasi
+            const indonesianNames = [
+                "Alya Puspita", "Bagus Wicaksono", "Citra Dewi", "Dedi Hidayat", "Eka Susanti", "Fajar Ramadhan", "Gita Pratiwi", "Hendra Saputra", "Ira Nuraini", "Joko Santoso", "Kiki Agustina", "Lukman Hakim", "Maria Simanjuntak", "Naufal Ardiansyah", "Putri Lestari", "Rizky Firmansyah", "Siti Rahmawati", "Taufik Hidayat", "Umar Said", "Vina Mariska", "Wayan Arta", "Yuni Lestari", "Zainal Abidin", "Aldi Nabil", "Bella Putri", "Candra Wijaya", "Dina Kusuma", "Erik Kurniawan", "Fatimah Zahra", "Guntur Prasetyo", "Helena Sitorus", "Indra Gunawan", "Jihan Fahira", "Krisna Adi", "Lina Marlina", "Miko Subagyo", "Nia Ramadhani", "Oscar Gunawan", "Puspita Wijaya", "Raka Putra", "Sinta Permata", "Teguh Santoso", "Umiyati Rahayu", "Vicky Prasetyo", "Widia Nuraini", "Yudi Setiawan", "Zahra Salsabila", "Andi Ramadhan", "Bunga Citra", "Dian Sastro", "Eko Putra", "Fani Nurlita", "Gani Wardana", "Hana Pertiwi", "Ivan Gunawan", "Jeni Rahayu", "Kristian Wijaya", "Lani Susanti", "Maya Puspita", "Nina Agustina", "Andrianto", "Agnes Monica", "Andika Pratama", "Desy Ratnasari", "Fahmi Alatas", "Heru Susanto", "Indah Permatasari", "Joko Widodo", "Kartika Putri", "Lukman Sardi", "Melani Subono", "Nana Mirdad", "Raffi Ahmad", "Ririn Ekawati", "Tora Sudiro", "Uut Permatasari", "Vicky Nitinegoro", "Wulan Guritno", "Yayan Ruhian", "Zaskia Gotik", "Afgan Syahreza", "BCL", "Chelsea Islan", "Dimas Beck", "Eva Celia", "Gading Marten", "Gisella Anastasia", "Iko Uwais", "Jefri Nichol", "Laura Basuki", "Maia Estianty", "Naysilla Mirdad", "Olla Ramlan", "Pevita Pearce", "Raditya Dika", "Reza Rahadian", "Syahrini", "Tulus", "Via Vallen", "Widy Soediro", "Yama Carlos", "Anang Hermansyah", "Aura Kasih", "Denny Cagur", "Fitri Tropica", "Gilang Dirga", "Iis Dahlia", "Jupe", "Krisdayanti", "Luna Maya", "Mulan Jameela", "Nagita Slavina", "Raffi Nagita", "Sule", "Andre Taulany", "Nunung Srimulat", "Vincent Ryan", "Desta Mahendra", "Enzy Storia", "Hesti Purwadinata", "Anwar Sanjaya", "Ruben Onsu", "Sarwendah Tan", "Atta Halilintar", "Aurel Hermansyah", "Ria Ricis", "Teuku Ryan", "Natasha Wilona", "Verrell Bramasta", "Nikita Willy", "Dude Harlino", "Alyssa Soebandono", "Prilly Latuconsina", "Aliando Syarief", "Ferry Maryadi", "Deswita Maharani", "Dwi Sasono", "Widi Mulia", "Gading Marten", "Gisella Anastasia", "Gading Gisel", "Darius Sinathrya", "Donna Agnesia", "Christian Sugiono", "Titi Kamal", "Hanung Bramantyo", "Zaskia Adya Mecca", "Baim Wong", "Paula Verhoeven", "Raffi Ahmad", "Nagita Slavina", "Raffi Nagita", "Iqbaal Ramadhan", "Vanesha Prescilla", "Adipati Dolken", "Jefri Nichol", "Amanda Rawles", "Angga Yunanda", "Shenina Cinnamon", "Aurelie Moeremans", "Jefri Nichol", "Aurora Ribero", "Kevin Ardilova", "Omar Daniel", "Yasmin Napper", "Giorgino Abraham", "Irish Bella", "Ammar Zoni", "Anya Geraldine", "Deva Mahenra", "Mikha Tambayong", "Boy William", "Lucinta Luna", "Nikita Mirzani", "Nikita Willy", "Prilly Latuconsina", "Rizky Billar", "Lesty Kejora", "Rizky Lesty", "Verrell Bramasta", "Natasha Wilona", "Verrell Natasha", "Randy Martin", "Cassandra Lee", "Randy Cassandra", "El Rumi", "Marsha Aruan", "El Marsha", "Al Ghazali", "Alyssa Daguise", "Al Alyssa", "Dul Jaelani", "Tissa Biani", "Dul Tissa", "Syifa Hadju", "Rizky Nazar", "Syifa Rizky", "Cut Syifa", "Rizky Nazar", "Cut Rizky", "Michelle Ziudith", "Rizky Nazar", "Michelle Rizky", "Ranty Maria", "Ammar Zoni", "Ranty Ammar", "Adinda Azani", "Adhitya Alkatiri", "Adinda Adhitya", "Dinda Kirana", "Randy Pangalila", "Dinda Randy", "Amanda Manopo", "Billy Syahputra", "Amanda Billy", "Rey Mbayang", "Dinda Hauw", "Rey Dinda", "Lesti Kejora", "Rizky Billar", "Lesti Rizky", "Atta Halilintar", "Aurel Hermansyah", "Atta Aurel", "Ria Ricis", "Teuku Ryan", "Ria Teuku", "Maell Lee", "Anggita", "Maell Anggita", "Fero Walandouw", "Susan Sameh", "Fero Susan", "Verrell Bramasta", "Febby Rastanty", "Verrell Febby", "Boy William", "Karen Vendela", "Boy Karen", "Denny Sumargo", "Olivia Allan", "Denny Olivia", "Deddy Corbuzier", "Sabrina Chairunnisa", "Deddy Sabrina", "Raditya Dika", "Anissa Aziza", "Radit Anissa", "Ernest Prakasa", "Meira Anastasia", "Ernest Meira", "Pandji Pragiwaksono", "Gamila Arief", "Pandji Gamila", "Uus", "Kartika Wijaksana", "Uus Kartika", "Ge Pamungkas", "Angie Ang", "Ge Angie", "Arie Kriting", "Indah Permatasari", "Arie Indah", "Ryan Delon", "Sharena Gunawan", "Ryan Sharena", "Gading Marten", "Gisella Anastasia", "Gading Gisel", "Baim Wong", "Paula Verhoeven", "Baim Paula", "Raffi Ahmad", "Nagita Slavina", "Raffi Nagita", "Rizky Febian", "Mahalini Raharja", "Rizky Mahalini", "Azka Corbuzier", "Nada Tarina Putri", "Azka Nada", "El Rumi", "Marsha Aruan", "El Marsha", "Fadil Jaidi", "Fadil Syal", "Fadil Aja", "Fadil Fadil", "Fadil Dilla", "Kiky Saputri", "Muhammad Khairi", "Kiky Khairi", "Vidi Aldiano", "Sheila Dara Aisha", "Vidi Sheila", "Jefri Nichol", "Amanda Rawles", "Jefri Amanda", "Aliando Syarief", "Prilly Latuconsina", "Ali Prilly", "Randy Martin", "Cassandra Lee", "Randy Cassandra", "Ari Irham", "Jesyca Auryn", "Ari Jesyca", "Syakir Daulay", "Syifa Hadju", "Syakir Syifa", "Rey Mbayang", "Dinda Hauw", "Rey Dinda", "Adipati Dolken", "Canti Tachril", "Adipati Canti", "Bryan Domani", "Mawar Eva de Jongh", "Bryan Mawar", "Angga Yunanda", "Shenina Cinnamon", "Angga Shenina", "Raffi Ahmad", "Nia Ramadhani", "Raffi Nia", "Verrell Bramasta", "Natasha Wilona", "Verrell Natasha", "Baim Wong", "Citra Kirana", "Baim Citra", "Rizky Billar", "Lesty Kejora", "Rizky Lesty", "Atta Halilintar", "Aurel Hermansyah", "Atta Aurel", "Sule", "Nathalie Holscher", "Sule Nathalie", "Rizky Febian", "Mahalini", "Rizky Mahalini", "Ria Ricis", "Teuku Ryan", "Ria Ryan", "Nagita Slavina", "Raffi Ahmad", "Nagita Raffi", "Maudy Ayunda", "Jesse Choi", "Maudy Jesse", "Raisa Andriana", "Hamish Daud", "Raisa Hamish", "Isyana Sarasvati", "Rayhan Maditra", "Isyana Rayhan", "Afgan Syahreza", "Rosa", "Afgan Rosa", "Tulus", "Tulus", "Tulus", "Tulus", "Tulus", "Tulus"
+            ];
+            
+            // Inisialisasi pemain simulasi dengan saldo awal yang bervariasi
+            state.simulatedPlayers = indonesianNames.map((name, index) => {
+                const initialBalances = [100, 500, 1000, 2000, 5000];
+                const initialBalance = initialBalances[Math.floor(Math.random() * initialBalances.length)];
+                return {
+                    id: `sim-${index}`,
+                    name: name,
+                    balance: initialBalance,
+                    isSimulated: true,
+                    isOnline: Math.random() > 0.5 // Status online/offline awal acak
+                };
+            });
+
+            // Memperbarui saldo pemain simulasi dan status online/offline
+            function updateSimulatedPlayers() {
+                state.simulatedPlayers.forEach(player => {
+                    // Saldo bertambah/berkurang secara acak
+                    const change = Math.floor(Math.random() * 200) - 100; // -100 to +100
+                    player.balance = Math.max(1, player.balance + change); // Pastikan saldo tidak kurang dari 1
+                    
+                    // Toggle online status setiap 5 menit (300000 ms)
+                    player.isOnline = Math.random() > 0.5;
+                });
+                updateOnlinePlayers(null); // Panggil render ulang dengan data simulasi yang diperbarui
+            }
+            
+            function censorName(name) {
+                const parts = name.split(' ');
+                const censoredParts = parts.map(part => {
+                    if (part.length <= 2) {
+                        return part;
+                    }
+                    const firstLetter = part[0];
+                    const lastLetter = part[part.length - 1];
+                    const middle = '***';
+                    return `${firstLetter}${middle}${lastLetter}`;
+                });
+                return censoredParts.join(' ');
+            }
+            
+            // Removed: generateMarqueeText() and its related call on DOMContentLoaded
+            
+            // Jalankan pembaruan saldo setiap 10 detik dan status online/offline setiap 5 menit
+            setInterval(updateSimulatedPlayers, 10000);
+            setInterval(updateSimulatedPlayers, 300000);
+
+            // UI Functions
+            function showPage(pageName) {
+                const pages = document.querySelectorAll('.page');
+                pages.forEach(page => {
+                    const isCurrentPage = page.id === `page-${pageName}`;
+                    page.classList.add('transition-opacity', 'duration-500');
+                    if (isCurrentPage) {
+                         page.classList.remove('hidden', 'opacity-0');
+                         page.classList.add('z-10', 'opacity-100');
+                    } else {
+                         page.classList.add('opacity-0');
+                         page.classList.remove('z-10', 'opacity-100');
+                         // Add hidden class after transition
+                         setTimeout(() => {
+                             if (!page.classList.contains('opacity-100')) {
+                                 page.classList.add('hidden');
+                             }
+                         }, 500);
+                    }
+                });
+            }
+
+            function showModal(message, isError = false) {
+                const modal = document.getElementById('modal');
+                const modalMessage = document.getElementById('modal-message');
+                if (modal && modalMessage) {
+                    modalMessage.textContent = message;
+                    modalMessage.classList.remove('neon-text-cyan', 'text-red-500');
+                    if (isError) {
+                        modalMessage.classList.add('text-red-500');
+                    } else {
+                        modalMessage.classList.add('neon-text-cyan');
+                    }
+                    modal.classList.remove('hidden', 'opacity-0');
+                    modal.classList.add('flex', 'opacity-100');
+                }
+            }
+
+            function updateBalanceUI(balance) {
+                const balanceDisplay = document.getElementById('balance-display');
+                if (balanceDisplay) {
+                    balanceDisplay.textContent = `$${balance.toLocaleString()}`;
+                }
+            }
+
+            function updateOnlinePlayers(realPlayers) {
+                const onlinePlayersList = document.getElementById('online-players-list');
+                const offlinePlayersList = document.getElementById('offline-players-list');
+                if (!onlinePlayersList || !offlinePlayersList) return;
+                
+                onlinePlayersList.innerHTML = '';
+                offlinePlayersList.innerHTML = '';
+                
+                let allPlayers = [...state.simulatedPlayers];
+                if (realPlayers) {
+                    realPlayers.forEach(player => {
+                        if (player.id === userId) {
+                            player.name = `${state.userName} (Anda)`;
+                            player.balance = state.userBalance;
+                        }
+                        allPlayers.unshift(player);
+                    });
+                }
+                
+                // Filter players into online and offline lists
+                const onlinePlayers = allPlayers.filter(p => p.isOnline || (realPlayers && realPlayers.some(rp => rp.id === p.id)));
+                const offlinePlayers = allPlayers.filter(p => !p.isOnline && !(realPlayers && realPlayers.some(rp => rp.id === p.id)));
+                
+                function createPlayerElement(player, isOnline) {
+                    const playerEl = document.createElement('div');
+                    const statusClasses = isOnline ? ['bg-cyan-900/30', 'neon-border-cyan'] : ['bg-gray-800/30', 'border-gray-600'];
+                    const textClass = isOnline ? 'neon-text-cyan' : 'text-gray-400';
+                    playerEl.classList.add('p-3', 'backdrop-blur-sm', 'rounded-full', 'flex', 'items-center', 'space-x-4', 'transition-transform', 'hover:scale-105', 'duration-300');
+                    statusClasses.forEach(c => playerEl.classList.add(c));
+
+                    playerEl.innerHTML = `
+                        <div class="w-10 h-10 rounded-full bg-cyan-500/50 flex items-center justify-center neon-text-cyan">
+                            <span class="text-xl">👤</span>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="font-orbitron text-white text-sm ${textClass}">${player.name}</p>
+                            <p class="text-xs text-gray-300 ${textClass}">Koin: ${player.balance.toLocaleString()}</p>
+                        </div>
+                        ${isOnline && player.id !== userId ? `
+                            <button data-opponent-name="${player.name}" data-opponent-id="${player.id}" class="duel-button py-1 px-3 rounded-full bg-gold-500/80 neon-border-gold transition-transform hover:scale-110 font-orbitron text-xs">Duel</button>
+                        ` : ''}
+                    `;
+                    return playerEl;
+                }
+
+                onlinePlayers.forEach(player => {
+                    onlinePlayersList.appendChild(createPlayerElement(player, true));
+                });
+
+                offlinePlayers.forEach(player => {
+                    offlinePlayersList.appendChild(createPlayerElement(player, false));
+                });
+                
+                // Attach event listeners to new duel buttons
+                document.querySelectorAll('.duel-button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        playHologramClick();
+                        const opponentName = e.target.dataset.opponentName;
+                        showDuelConfirmation(opponentName);
+                    });
+                });
+            }
+            
+            function showDuelConfirmation(opponentName) {
+                const duelModalOpponentName = document.getElementById('duel-modal-opponent-name');
+                const duelModal = document.getElementById('duel-modal');
+                if (duelModalOpponentName && duelModal) {
+                    duelModalOpponentName.textContent = opponentName;
+                    duelModal.classList.remove('hidden', 'opacity-0');
+                    duelModal.classList.add('flex', 'opacity-100');
+                }
+            }
+            
+            async function startDuel(opponentName) {
+                state.opponentName = opponentName;
+                const arenaOpponentName = document.getElementById('arena-opponent-name');
+                if (arenaOpponentName) {
+                    arenaOpponentName.textContent = state.opponentName;
+                }
+                showPage('arena');
+                const countdownTimer = document.getElementById('countdown-timer');
+                if (countdownTimer) {
+                    countdownTimer.classList.remove('hidden');
+                    let count = 5;
+                    countdownTimer.textContent = `Waktu: ${count}s`;
+                    const countdownInterval = setInterval(() => {
+                        count--;
+                        countdownTimer.textContent = `Waktu: ${count}s`;
+                        if (count <= 0) {
+                            clearInterval(countdownInterval);
+                        }
+                    }, 1000);
+                }
+                
+                state.timerTimeoutId = setTimeout(() => {
+                    if (!state.isChoiceMade) {
+                        playGame('none'); // Otomatis kalah jika waktu habis
+                    }
+                }, 5000);
+            }
+
+            // Game Logic
+            function playHologramClick() {
+                const audio = new Audio('data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgABAAEACAAAhgEAAJACADoJAAg4AE1Bbm82cmlhIHNpbmdpbmcgYW5kIHBhcmRpbmcgZm9yIGFuIGlsbG9ydSBpbml0IAAA');
+                try {
+                    audio.play();
+                } catch (e) {
+                    console.error("Audio playback error:", e);
+                }
+            }
+            
+            function getBotChoice(playerChoice) {
+                const choices = ['rock', 'paper', 'scissors'];
+                
+                // Pola kemenangan baru: menang, kalah, menang, kalah, menang, menang, kalah, kalah, menang, menang, menang, kalah, menang, kalah, kalah, kalah, kalah, kalah.
+                const winPattern = ['win', 'lose', 'win', 'lose', 'win', 'win', 'lose', 'lose', 'win', 'win', 'win', 'lose', 'win', 'lose', 'lose', 'lose', 'lose', 'lose'];
+                
+                let sequenceResult;
+                if (state.hasWithdrawn || state.userBalance >= 400) {
+                     // Mode sulit: pola kemenangan bot
+                     const botWinPattern = ['win', 'win', 'win', 'win', 'win', 'win', 'lose'];
+                     sequenceResult = botWinPattern[state.gameIndex % botWinPattern.length];
+                } else {
+                     // Mode mudah: pola kemenangan pemain
+                     sequenceResult = winPattern[state.gameIndex % winPattern.length];
+                }
+                state.gameIndex++;
+                
+                if (sequenceResult === 'win') {
+                    if (playerChoice === 'rock') return 'scissors';
+                    if (playerChoice === 'paper') return 'rock';
+                    if (playerChoice === 'scissors') return 'paper';
+                } else if (sequenceResult === 'lose') {
+                    if (playerChoice === 'rock') return 'paper';
+                    if (playerChoice === 'paper') return 'scissors';
+                    if (playerChoice === 'scissors') return 'rock';
+                } else { // 'draw'
+                    return playerChoice;
+                }
+            }
+            
+            function determineWinner(playerChoice, opponentChoice) {
+                if (playerChoice === opponentChoice) return 'draw';
+                if (
+                    (playerChoice === 'rock' && opponentChoice === 'scissors') ||
+                    (playerChoice === 'paper' && opponentChoice === 'rock') ||
+                    (playerChoice === 'scissors' && opponentChoice === 'paper')
+                ) {
+                    return 'player';
+                } else {
+                    return 'bot';
+                }
+            }
+
+            async function playGame(playerChoice) {
+                playHologramClick();
+                state.isChoiceMade = true;
+                clearTimeout(state.timerTimeoutId);
+                
+                const arenaChoices = document.getElementById('arena-choices');
+                const countdownTimer = document.getElementById('countdown-timer');
+                const resultMessage = document.getElementById('result-message');
+                if (arenaChoices && countdownTimer && resultMessage) {
+                    arenaChoices.classList.add('hidden');
+                    countdownTimer.classList.add('hidden');
+                    resultMessage.textContent = 'Menunggu musuh...';
+                    resultMessage.classList.remove('hidden');
+                }
+                
+                updateBalance(state.userBalance - 50);
+
+                const opponentName = state.opponentName;
+                const isRealPlayer = !state.simulatedPlayers.some(p => p.name === opponentName);
+                
+                let finalBotChoice;
+                if (playerChoice === 'none') {
+                    finalBotChoice = 'rock'; // Bot always wins if player doesn't choose
+                } else {
+                    finalBotChoice = getBotChoice(playerChoice);
+                }
+
+                const opponentChoice = finalBotChoice;
+                const winner = determineWinner(playerChoice, opponentChoice);
+                let message = '';
+
+                if (winner === 'player') {
+                    message = 'Anda Menang!';
+                } else if (winner === 'bot') {
+                    message = 'Anda Kalah!';
+                } else {
+                    message = 'Seri!';
+                }
+                
+                const playerChoiceDisplay = document.getElementById('player-choice-display');
+                const botChoiceDisplay = document.getElementById('bot-choice-display');
+                if (playerChoiceDisplay && botChoiceDisplay) {
+                    playerChoiceDisplay.textContent = choiceIcons[playerChoice];
+                    botChoiceDisplay.textContent = choiceIcons[opponentChoice];
+                    playerChoiceDisplay.classList.remove('hidden');
+                    botChoiceDisplay.classList.remove('hidden');
+                }
+                setTimeout(() => {
+                    showResult(winner, message, playerChoice, opponentChoice);
+                }, 1000);
+            }
+            
+            const choiceIcons = {
+                rock: '✊',
+                paper: '✋',
+                scissors: '✌️',
+                none: '❌'
+            };
+
+            async function showResult(winner, message, playerChoice, botChoice) {
+                const arenaResultText = document.getElementById('arena-result-text');
+                const resultMessage = document.getElementById('result-message');
+                const arenaContinueYesButton = document.getElementById('arena-continue-yes');
+                const arenaContinueText = document.getElementById('arena-continue-text');
+                if (arenaResultText && resultMessage && arenaContinueYesButton && arenaContinueText) {
+                    arenaResultText.textContent = `Pilihan Anda: ${choiceIcons[playerChoice]} vs ${choiceIcons[botChoice]} Pilihan Musuh`;
+                    arenaResultText.classList.remove('hidden');
+                    resultMessage.textContent = message;
+                    resultMessage.classList.remove('hidden');
+                    arenaContinueYesButton.parentElement.classList.remove('hidden');
+                    arenaContinueText.classList.remove('hidden');
+                }
+                
+                let count = 5;
+                if (arenaContinueText) {
+                    arenaContinueText.textContent = `Lanjutkan duel dalam ${count}s`;
+                    state.continueTimer = setInterval(() => {
+                        count--;
+                        arenaContinueText.textContent = `Lanjutkan duel dalam ${count}s`;
+                        if (count <= 0) {
+                            clearInterval(state.continueTimer);
+                            if (!state.isContinueClicked) {
+                                showPage('lobby');
+                                resetArena();
+                            }
+                        }
+                    }, 1000);
+                }
+
+                const resultAnimationContainer = document.getElementById('result-animation-container');
+                if (resultAnimationContainer) {
+                    resultAnimationContainer.innerHTML = '';
+                }
+                if (winner === 'player') {
+                    const newBalance = state.userBalance + 100;
+                    await updateBalance(newBalance);
+                }
+            }
+
+            function resetArena() {
+                const arenaChoices = document.getElementById('arena-choices');
+                const resultMessage = document.getElementById('result-message');
+                const resultAnimationContainer = document.getElementById('result-animation-container');
+                const playerChoiceDisplay = document.getElementById('player-choice-display');
+                const botChoiceDisplay = document.getElementById('bot-choice-display');
+                const arenaResultText = document.getElementById('arena-result-text');
+                const arenaContinueYesButton = document.getElementById('arena-continue-yes');
+                const arenaContinueText = document.getElementById('arena-continue-text');
+                if (arenaChoices && resultMessage && resultAnimationContainer && playerChoiceDisplay && botChoiceDisplay && arenaResultText && arenaContinueYesButton && arenaContinueText) {
+                    arenaChoices.classList.remove('hidden');
+                    resultMessage.classList.add('hidden');
+                    resultAnimationContainer.innerHTML = '';
+                    playerChoiceDisplay.classList.add('hidden');
+                    botChoiceDisplay.classList.add('hidden');
+                    arenaResultText.classList.add('hidden');
+                    arenaContinueYesButton.parentElement.classList.add('hidden');
+                    arenaContinueText.classList.add('hidden');
+                    clearTimeout(state.timerTimeoutId);
+                    clearInterval(state.continueTimer);
+                    state.isChoiceMade = false;
+                    state.isContinueClicked = false;
+                }
+            }
+
+            // Firestore Data Handling
+            async function updateBalance(newBalance) {
+                state.userBalance = newBalance;
+                updateBalanceUI(newBalance);
+                if (userDocRef) {
+                    try {
+                        await updateDoc(userDocRef, {
+                            balance: newBalance,
+                            lastUpdated: new Date().toISOString()
+                        });
+                    } catch (e) {
+                        console.error("Error updating balance: ", e);
+                    }
+                }
+            }
+
+            async function updatePresence(status) {
+                if (!userId) return;
+                try {
+                    const presenceRef = doc(db, `artifacts/${appId}/public/data/online_players`, userId);
+                    await setDoc(presenceRef, {
+                        name: state.userName,
+                        lastSeen: new Date().toISOString(),
+                        status: status,
+                        appId: appId,
+                        balance: state.userBalance
+                    }, { merge: true });
+                } catch (e) {
+                    console.error("Error updating user presence: ", e);
+                    if (e.code === 'permission-denied') {
+                        console.error("Firebase Permission Denied: Anda tidak memiliki izin untuk memperbarui status online. Mohon periksa aturan keamanan.");
+                    }
+                }
+            }
+
+            async function addTransaction(type, amount, fee = 0, status = 'pending') {
+                try {
+                    const transactionRef = doc(collection(db, `artifacts/${appId}/public/data/transactions`));
+                    await setDoc(transactionRef, {
+                        userId: userId,
+                        type: type,
+                        amount: amount,
+                        fee: fee,
+                        status: status,
+                        createdAt: serverTimestamp(),
+                        transactionId: transactionRef.id
+                    });
+                    return transactionRef.id;
+                } catch (e) {
+                    console.error("Error adding transaction: ", e);
+                    showModal("Terjadi kesalahan. Transaksi gagal.", true);
+                    return null;
+                }
+            }
+
+            function renderTransactionHistory(history) {
+                const transactionHistoryList = document.getElementById('transaction-history-list');
+                if (transactionHistoryList) {
+                    transactionHistoryList.innerHTML = '';
+                    if (history && history.length > 0) {
+                        history.forEach(tx => {
+                            const txEl = document.createElement('div');
+                            txEl.classList.add('glassmorphism', 'p-4', 'rounded-xl', 'mb-2', 'flex', 'justify-between', 'items-center');
+                            
+                            let amountText = `$${tx.amount.toLocaleString()}`;
+                            let typeText = tx.type === 'withdraw' ? 'Penarikan' : 'Top-Up';
+                            let colorClass = tx.type === 'withdraw' ? 'text-red-500' : 'text-green-500';
+                            let icon = tx.type === 'withdraw' ? '💸' : '💰';
+                            let statusClass = 'text-yellow-500'; // Default for pending
+                            if (tx.status === 'approved') {
+                                statusClass = 'text-green-500';
+                            } else if (tx.status === 'rejected') {
+                                statusClass = 'text-red-500';
+                            }
+
+                            if (tx.fee > 0) {
+                                amountText += ` (-${tx.fee.toLocaleString()} biaya)`;
+                            }
+
+                            txEl.innerHTML = `
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-2xl">${icon}</span>
+                                    <div>
+                                        <p class="font-orbitron text-sm ${colorClass}">${typeText}</p>
+                                        <p class="text-xs text-gray-400">${new Date(tx.createdAt?.seconds * 1000).toLocaleDateString()}</p>
+                                        <p class="text-xs font-bold ${statusClass}">Status: ${tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}</p>
+                                    </div>
+                                </div>
+                                <p class="font-orbitron text-sm ${colorClass}">${amountText}</p>
+                            `;
+                            transactionHistoryList.appendChild(txEl);
+                        });
+                    } else {
+                        transactionHistoryList.innerHTML = '<p class="text-center text-gray-500">Belum ada riwayat transaksi.</p>';
+                    }
+                }
+            }
+            
+            async function saveProfile() {
+                const profileNameInput = document.getElementById('profile-name-input');
+                if (!profileNameInput) return;
+                const newName = profileNameInput.value.trim();
+                if (newName.length < 3) {
+                    showModal("Nama minimal 3 karakter.");
+                    return;
+                }
+                state.userName = newName;
+                profileNameInput.value = newName; // Update input field
+                showModal("Nama berhasil diperbarui!");
+                await updateDoc(userDocRef, { name: newName });
+                await updatePresence('online'); // Update online status with new name
+            }
+
+            async function withdrawCoins() {
+                const withdrawInput = document.getElementById('withdraw-input');
+                if (!withdrawInput) return;
+                const amount = parseInt(withdrawInput.value);
+                const adminFee = amount * 0.20;
+                const netAmount = amount - adminFee;
+
+                if (isNaN(amount) || amount < 300 || amount > 1000000) {
+                    showModal("Jumlah penarikan tidak valid. Minimum 300 koin, maksimum 1.000.000 koin.");
+                    return;
+                }
+                if (state.userBalance < amount) {
+                    showModal("Saldo koin Anda tidak mencukupi untuk penarikan ini.");
+                    return;
+                }
+                
+                const transactionId = await addTransaction('withdraw', amount, adminFee);
+                
+                if (transactionId) {
+                    await updateDoc(userDocRef, { hasWithdrawn: true });
+                    showModal(`Permintaan Penarikan Anda dengan nomor transaksi ${transactionId.slice(0, 8)} sedang diproses. Saldo Anda akan diperbarui setelah transaksi disetujui.`);
+                    withdrawInput.value = '';
+                }
+            }
+
+            // Event Listeners
+            document.getElementById('login-button')?.addEventListener('click', async () => {
+                playHologramClick();
+                const loginButton = document.getElementById('login-button');
+                if (loginButton) {
+                    loginButton.textContent = 'Memuat...';
+                }
+                try {
+                    await signInAnonymously(auth);
+                } catch (e) {
+                    showModal('Gagal masuk. Silakan periksa koneksi internet Anda atau coba lagi nanti.', true);
+                    console.error("Anonymous sign-in failed:", e);
+                } finally {
+                    if (loginButton) {
+                        loginButton.textContent = 'Masuk';
+                    }
+                }
+            });
+
+            document.getElementById('register-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('register');
+            });
+
+            document.getElementById('register-submit-button')?.addEventListener('click', async () => {
+                playHologramClick();
+                const registerNameInput = document.getElementById('register-name-input');
+                const registerPhoneInput = document.getElementById('register-phone-input');
+                const registerPasswordInput = document.getElementById('register-password-input');
+                
+                const fullName = registerNameInput?.value;
+                const phoneNumber = registerPhoneInput?.value;
+                const password = registerPasswordInput?.value;
+
+                if (!fullName || !phoneNumber || !password) {
+                    showModal('Nama Lengkap, Nomor HP, dan Kata Sandi harus diisi.', true);
+                    return;
+                }
+                
+                await signInAnonymously(auth);
+                if (auth.currentUser) {
+                     const registerRef = doc(db, `artifacts/${appId}/users/${auth.currentUser.uid}/profile/data`);
+                     await setDoc(registerRef, {
+                        fullName: fullName,
+                        phoneNumber: phoneNumber,
+                        password: password,
+                        name: fullName, 
+                        balance: 0, 
+                        registeredAt: new Date().toISOString(),
+                        hasWithdrawn: false, 
+                     });
+                     showModal('Pendaftaran berhasil! Silakan masuk.');
+                     showPage('login');
+                } else {
+                     showModal('Gagal mendaftar. Silakan coba lagi.', true);
+                }
+            });
+            
+            document.getElementById('register-back-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('login');
+            });
+
+            document.getElementById('about-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('about');
+            });
+
+            document.getElementById('about-back-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('login');
+            });
+            
+            document.getElementById('about-to-login-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('login');
+            });
+            
+            // Multiplayer Logic
+            document.getElementById('lobby-play-button')?.addEventListener('click', async () => {
+                playHologramClick();
+                if (state.userBalance < 50) {
+                    showModal('Saldo koin Anda tidak mencukupi untuk bermain. Silakan lakukan Top-Up terlebih dahulu.');
+                    return;
+                }
+                
+                const onlineRealPlayers = await getRealOnlinePlayers();
+                
+                if (onlineRealPlayers.length > 0) {
+                    // Start a real multiplayer match
+                    state.isBotDuel = false;
+                    const opponent = onlineRealPlayers[Math.floor(Math.random() * onlineRealPlayers.length)];
+                    state.opponentName = opponent.name;
+                    await startRealtimeDuel(opponent.id);
+                } else {
+                    // Fallback to bot duel
+                    state.isBotDuel = true;
+                    const onlineBots = state.simulatedPlayers.filter(p => p.isOnline);
+                    const randomBot = onlineBots[Math.floor(Math.random() * onlineBots.length)];
+                    state.opponentName = randomBot.name;
+                    startDuel(state.opponentName);
+                }
+            });
+
+            async function getRealOnlinePlayers() {
+                const presenceColRef = collection(db, `artifacts/${appId}/public/data/online_players`);
+                const q = query(presenceColRef, where("status", "==", "online"));
+                const querySnapshot = await getDocs(q);
+                const players = [];
+                querySnapshot.forEach(doc => {
+                    if (doc.id !== userId) {
+                        players.push({ id: doc.id, ...doc.data() });
+                    }
+                });
+                return players;
+            }
+
+            async function startRealtimeDuel(opponentId) {
+                // Create a duel document in Firestore
+                const matchRef = doc(collection(db, `artifacts/${appId}/public/data/matches`));
+                state.currentMatchId = matchRef.id;
+                
+                await setDoc(matchRef, {
+                    player1Id: userId,
+                    player2Id: opponentId,
+                    status: 'active',
+                    player1Choice: null,
+                    player2Choice: null,
+                    createdAt: serverTimestamp(),
+                });
+                
+                // Listen for changes in the match document
+                unsubscribeFromGame = onSnapshot(matchRef, (doc) => {
+                    const matchData = doc.data();
+                    if (matchData) {
+                        if (matchData.player1Choice && matchData.player2Choice) {
+                            // Both players have made a choice, determine winner
+                            const winner = determineWinner(matchData.player1Choice, matchData.player2Choice);
+                            let message = '';
+                            if (winner === 'player') {
+                                message = 'Anda Menang!';
+                            } else if (winner === 'bot') {
+                                message = 'Anda Kalah!';
+                            } else {
+                                message = 'Seri!';
+                            }
+                            showResult(winner, message, matchData.player1Choice, matchData.player2Choice);
+                            unsubscribeFromGame(); // End the listener
+                        }
+                    }
+                });
+                
+                showPage('arena');
+                // You would need to add logic here to display waiting message and
+                // handle the opponent's choice when it comes in.
+            }
+
+            document.getElementById('lobby-topup-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('topup');
+            });
+
+            document.getElementById('topup-back-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('lobby');
+            });
+
+            document.getElementById('arena-back-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('lobby');
+                resetArena();
+            });
+            
+            document.getElementById('lobby-profile-button')?.addEventListener('click', () => {
+                playHologramClick();
+                const profileNameInput = document.getElementById('profile-name-input');
+                const profilePhoneDisplay = document.getElementById('profile-phone-display');
+                if (profileNameInput && profilePhoneDisplay) {
+                    profileNameInput.value = state.userName;
+                    profilePhoneDisplay.textContent = state.userPhoneNumber;
+                }
+                showPage('profile');
+            });
+
+            document.getElementById('profile-back-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('lobby');
+            });
+            
+            document.getElementById('save-profile-button')?.addEventListener('click', async () => {
+                playHologramClick();
+                await saveProfile();
+            });
+
+            document.getElementById('withdraw-button')?.addEventListener('click', async () => {
+                playHologramClick();
+                await withdrawCoins();
+            });
+
+            document.querySelectorAll('.buy-topup-button').forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    playHologramClick();
+                    state.currentTopupAmount = parseInt(e.currentTarget.dataset.value);
+                    showPage('payment');
+                });
+            });
+
+            document.getElementById('payment-back-button')?.addEventListener('click', () => {
+                playHologramClick();
+                showPage('topup');
+            });
+            
+            document.getElementById('payment-complete-button')?.addEventListener('click', async () => {
+                 playHologramClick();
+                 const transactionId = await addTransaction('topup', state.currentTopupAmount);
+                 if (transactionId) {
+                    showModal(`Permintaan Top-Up Anda dengan nomor transaksi ${transactionId.slice(0, 8)} sedang diproses. Koin Anda akan ditambahkan setelah transaksi disetujui.`);
+                 }
+                 showPage('lobby'); 
+            });
+            
+            document.getElementById('close-modal-button')?.addEventListener('click', () => {
+                const modal = document.getElementById('modal');
+                if (modal) {
+                    modal.classList.add('hidden', 'opacity-0');
+                    modal.classList.remove('flex', 'opacity-100');
+                }
+            });
+
+            document.getElementById('confirm-duel-button')?.addEventListener('click', () => {
+                playHologramClick();
+                const duelModal = document.getElementById('duel-modal');
+                const duelModalOpponentName = document.getElementById('duel-modal-opponent-name');
+                if (duelModal && duelModalOpponentName) {
+                    duelModal.classList.add('hidden', 'opacity-0');
+                    duelModal.classList.remove('flex', 'opacity-100');
+                }
+                startDuel(duelModalOpponentName.textContent);
+            });
+
+            document.getElementById('cancel-duel-button')?.addEventListener('click', () => {
+                playHologramClick();
+                const duelModal = document.getElementById('duel-modal');
+                if (duelModal) {
+                    duelModal.classList.add('hidden', 'opacity-0');
+                    duelModal.classList.remove('flex', 'opacity-100');
+                }
+            });
+
+            document.querySelectorAll('.choice-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const choice = e.currentTarget.dataset.choice;
+                    playGame(choice);
+                });
+            });
+
+            document.getElementById('arena-continue-yes')?.addEventListener('click', () => {
+                state.isContinueClicked = true;
+                playHologramClick();
+                resetArena();
+                startDuel(state.opponentName);
+            });
+            
+            document.getElementById('arena-continue-no')?.addEventListener('click', () => {
+                state.isContinueClicked = true;
+                playHologramClick();
+                showPage('lobby');
+                resetArena();
+            });
+
+            // Initial Setup
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    userDocRef = doc(db, `artifacts/${appId}/users/${userId}/profile/data`);
+
+                    try {
+                        unsubscribeFromUser = onSnapshot(userDocRef, (docSnap) => {
+                            if (docSnap.exists()) {
+                                const data = docSnap.data();
+                                state.userBalance = data.balance || 0;
+                                state.userName = data.fullName || data.name || `Pemain-${Math.floor(Math.random() * 1000)}`;
+                                state.userPhoneNumber = data.phoneNumber || 'Tidak Terdaftar';
+                                state.hasWithdrawn = data.hasWithdrawn || false; // NEW: Read hasWithdrawn status
+                            } else {
+                                // First time login, set default values
+                                setDoc(userDocRef, {
+                                    balance: 0,
+                                    name: `Pemain-${Math.floor(Math.random() * 1000)}`,
+                                    phoneNumber: 'Tidak Terdaftar',
+                                    registeredAt: new Date().toISOString(),
+                                    hasWithdrawn: false,
+                                });
+                                state.userBalance = 0;
+                                state.userName = `Pemain-${Math.floor(Math.random() * 1000)}`;
+                                state.userPhoneNumber = 'Tidak Terdaftar';
+                                state.hasWithdrawn = false;
+                            }
+                            updateBalanceUI(state.userBalance);
+                            updatePresence('online'); // Update presence after balance is set
+                        }, (error) => {
+                            console.error("Error subscribing to user data: ", error);
+                            showModal("Kesalahan saat memuat data profil. Silakan coba lagi.", true);
+                        });
+
+                        // New: Subscribe to user's transactions
+                        const transactionsColRef = collection(db, `artifacts/${appId}/public/data/transactions`);
+                        const userTransactionsQuery = query(transactionsColRef, where("userId", "==", userId));
+                        unsubscribeFromTransactions = onSnapshot(userTransactionsQuery, (querySnapshot) => {
+                            const transactions = [];
+                            querySnapshot.forEach((doc) => {
+                                transactions.push({ id: doc.id, ...doc.data() });
+                            });
+                            transactions.sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
+                            renderTransactionHistory(transactions);
+                        }, (error) => {
+                            console.error("Error subscribing to transactions: ", error);
+                            showModal("Kesalahan saat memuat riwayat transaksi. Silakan coba lagi.", true);
+                        });
+
+                        unsubscribeFromPlayers = onSnapshot(collection(db, `artifacts/${appId}/public/data/online_players`), (querySnapshot) => {
+                            const realPlayers = [];
+                            querySnapshot.forEach((doc) => {
+                                realPlayers.push({ id: doc.id, ...doc.data() });
+                            });
+                            updateOnlinePlayers(realPlayers);
+                        }, (error) => {
+                            console.error("Error subscribing to online players: ", error);
+                            showModal("Kesalahan saat memuat daftar pemain. Silakan coba lagi.", true);
+                        });
+                        
+                        onSnapshot(doc(db, '.info/connected'), (snapshot) => {
+                            const connected = snapshot.data().connected;
+                            if (connected) {
+                                console.log("Koneksi ke Firestore pulih.");
+                                updatePresence('online');
+                            } else {
+                                console.log("Koneksi ke Firestore terputus.");
+                                showModal("Masalah jaringan terdeteksi. Silakan periksa koneksi internet Anda.", true);
+                                updatePresence('offline');
+                            }
+                        });
+
+                        showPage('lobby');
+
+                    } catch (e) {
+                        console.error("Error subscribing to user data: ", e);
+                        if (e.code === 'permission-denied') {
+                            console.error("Firebase Permission Denied: Anda tidak memiliki izin untuk membaca data profil atau daftar pemain online. Mohon periksa aturan keamanan.");
+                        }
+                    }
+
+                } else {
+                    showPage('login');
+                }
+            });
+            
+        });
+
+    </script>
+    <script>
+        // Script for particle animation
+        const particleContainer = document.getElementById('particle-container');
+        if (particleContainer) {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particleContainer.appendChild(particle);
+            }
+        }
+    </script>
+</body>
+</html>
 
